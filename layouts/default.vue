@@ -13,10 +13,12 @@
     --color-bg: #0f0e17;
     --color-text: #a7a9be;
     --color-headline: #fffffe;
-    --color-primary: #ff8906;
-    --color-secondary: #f25f4c;
-    --color-tertimary: #e53170;
+    --color-primary: #f25f4c;
+    --color-secondary: #e53170;
     --color-green: #27ae60;
+    --color-warning: #ffd803;
+    --color-warning-text: #272343;
+    --grid-gap: 6px;
 }
 
 html {
@@ -47,5 +49,9 @@ header {
 
 main {
     padding: 1em;
+}
+
+button {
+    cursor: pointer;
 }
 </style>
