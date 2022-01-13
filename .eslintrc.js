@@ -5,10 +5,19 @@ module.exports = {
         node: true,
     },
     extends: [
+        'standard',
         'plugin:nuxt/recommended',
         'plugin:vue/vue3-recommended',
     ],
     plugins: [
+    ],
+    overrides: [
+        {
+            files: ['layouts/*.vue', 'pages/*.vue'],
+            rules: {
+                'vue/multi-word-component-names': 'off',
+            },
+        },
     ],
     // add your custom rules here
     rules: {
