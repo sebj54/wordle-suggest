@@ -22,16 +22,22 @@
 }
 
 html {
+    margin: 0;
     background-color: var(--color-bg);
 }
 
 body {
     max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
     font-family: Comfortaa, sans-serif;
     font-size: 14px;
     color: var(--color-text);
+}
+
+#__nuxt {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 header {
@@ -43,11 +49,15 @@ header {
     text-transform: uppercase;
 
     h1 {
-        margin: .25em;
+        margin: 0;
+        padding: .25em;
     }
 }
 
 main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     padding: 1em;
 }
 
