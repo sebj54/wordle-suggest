@@ -3,6 +3,7 @@
         :is="$attrs.onClick ? 'button' : 'div'"
         class="wordle-letter-wrapper"
         :class="{
+            '-not-in-word': notInWord,
             '-valid': valid,
             '-wrong-spot': wrongSpot,
         }"
@@ -24,6 +25,10 @@ export default {
         letter: {
             type: String,
             default: null,
+        },
+        notInWord: {
+            type: Boolean,
+            default: false,
         },
         row: {
             type: [Number, String],
@@ -60,8 +65,12 @@ export default {
         border-style: solid;
         border-width: 2px;
         box-sizing: content-box;
-        background-color: var(--color-background);
+        background-color: var(--color-bg);
         color: var(--color-headline);
+
+        &.-not-in-word {
+            background-color: var(--color-bg-lighter);
+        }
 
         &.-valid {
             background-color: var(--color-green);

@@ -1,4 +1,28 @@
 <template>
+    <h2 class="wordle-grid-label">
+        Pas dans le mot&nbsp;:
+    </h2>
+
+    <div class="wordle-grid -not-in-word">
+        <wordle-letter
+            v-for="letter in notInWord"
+            :key="letter"
+            :letter="letter"
+            not-in-word
+            @click="toggleAddNotInWordMode"
+        />
+
+        <wordle-letter
+            :letter="isAdding.isNotInWord ? '' : '+'"
+            :not-in-word="isAdding.isNotInWord"
+            @click="toggleAddNotInWordMode"
+        />
+    </div>
+
+    <h2 class="wordle-grid-label">
+        Dans le mot&nbsp;:
+    </h2>
+
     <div class="wordle-grid">
         <template
             v-for="(valid, index) in valids"
@@ -44,14 +68,13 @@
                 :row="(isAdding.index === index && isAdding.isValid === null ? 4 : 2) + letterIndex"
                 :letter="wrongSpotLetter"
                 wrong-spot
-                @click="removeWrongSpot(index, letterIndex)"
+                @click="removeWrongSpot(index, wrongSpotLetter)"
             />
-            <!-- TODO: Remove letter -->
         </template>
     </div>
 
     <wordle-keyboard
-        v-if="isAdding.index !== null && isAdding.isValid !== null"
+        v-if="(isAdding.index !== null && isAdding.isValid !== null) || isAdding.isNotInWord"
         @letter="addLetter"
     />
 </template>
@@ -63,11 +86,12 @@ export default {
             isAdding: {
                 index: null,
                 isValid: null,
+                isNotInWord: null,
             },
             count: 0,
+            notInWord: new Set(),
             valids: [],
             wrongSpots: [],
-            // TODO: Add not in word letters
         }
     },
     created() {
@@ -75,11 +99,13 @@ export default {
     },
     methods: {
         addLetter(letter) {
-            if (this.isAdding.index !== null) {
+            if (this.isAdding.isNotInWord) {
+                this.notInWord.add(letter)
+            } else if (this.isAdding.index !== null) {
                 if (this.isAdding.isValid) {
                     this.valids[this.isAdding.index] = letter
                 } else {
-                    this.wrongSpots[this.isAdding.index].push(letter)
+                    this.wrongSpots[this.isAdding.index].add(letter)
                 }
             }
 
@@ -94,14 +120,19 @@ export default {
             this.valids.fill(undefined)
 
             for (let i = 0; i < count; i++) {
-                this.wrongSpots[i] = []
+                this.wrongSpots[i] = new Set()
             }
+
+            this.notInWord.clear()
+        },
+        removeNotInWord(letter) {
+            this.notInWord.delete(letter)
         },
         removeValid(index) {
             this.valids[index] = undefined
         },
-        removeWrongSpot(index, letterIndex) {
-            this.wrongSpots[index].splice(letterIndex, 1)
+        removeWrongSpot(index, letter) {
+            this.wrongSpots[index].delete(letter)
         },
         toggleAddMode(index) {
             if (index !== undefined && this.isAdding.index === null) {
@@ -110,7 +141,11 @@ export default {
                 this.isAdding.index = null
             }
 
+            this.isAdding.isNotInWord = null
             this.isAdding.isValid = null
+        },
+        toggleAddNotInWordMode() {
+            this.isAdding.isNotInWord = !this.isAdding.isNotInWord
         },
         toggleAddValidMode() {
             this.isAdding.isValid = true
@@ -128,6 +163,11 @@ export default {
     grid-template-columns: repeat(v-bind(count), minmax(32px, 64px));
     grid-gap: var(--grid-gap);
     justify-content: center;
-    margin-bottom: var(--grid-gap);
+    margin-bottom: 2em;
+
+    &-label {
+        text-align: center;
+        color: var(--color-headline);
+    }
 }
 </style>
