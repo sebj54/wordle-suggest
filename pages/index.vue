@@ -1,5 +1,7 @@
 <template>
-    <wordle-grid />
+    <div>
+        <wordle-grid />
+    </div>
 </template>
 
 <script>
