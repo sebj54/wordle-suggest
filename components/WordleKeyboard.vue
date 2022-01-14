@@ -57,13 +57,15 @@ export default {
 
 <style lang="scss">
 .wordle-keyboard {
-    position: absolute;
+    position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    right: -50%;
+    transform: translateX(-50%);
     display: grid;
     grid-template-columns: repeat(v-bind(longestLine), minmax(32px, 1fr));
     grid-gap: var(--grid-gap);
+    max-width: var(--max-width);
     padding-top: var(--grid-gap);
     padding-bottom: var(--grid-gap);
     background-color: var(--color-bg);

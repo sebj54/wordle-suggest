@@ -19,6 +19,8 @@
     --color-green: #27ae60;
     --color-warning: #ffd803;
     --color-warning-text: #272343;
+
+    --max-width: 500px;
     --grid-gap: 6px;
 }
 
@@ -28,17 +30,11 @@ html {
 }
 
 body {
-    max-width: 500px;
+    max-width: var(--max-width);
     margin: 0 auto;
     font-family: Comfortaa, sans-serif;
     font-size: 14px;
     color: var(--color-text);
-}
-
-#__nuxt {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
 header {
@@ -56,8 +52,6 @@ header {
 }
 
 main {
-    position: relative;
-    flex-grow: 1;
     padding: 1em;
 }
 

@@ -73,6 +73,20 @@
         </template>
     </div>
 
+    <h2 class="wordle-grid-label">
+        {{ wordsFiltered.length }} mots possibles&nbsp;:
+    </h2>
+
+    <ul class="wordle-grid-words">
+        <li
+            v-for="(word, index) in wordsFiltered"
+            :key="index"
+            class="wordle-grid-word"
+        >
+            {{ word }}
+        </li>
+    </ul>
+
     <wordle-keyboard
         v-if="(isAdding.index !== null && isAdding.isValid !== null) || isAdding.isNotInWord"
         :not-in-word="notInWord"
@@ -90,6 +104,10 @@ export default {
         count: {
             type: Number,
             default: 5,
+        },
+        dictionary: {
+            type: Array,
+            required: true,
         },
     },
     setup(props) {
@@ -118,6 +136,37 @@ export default {
                 isNotInWord: null,
             },
         }
+    },
+    computed: {
+        wordsFiltered() {
+            const validPattern = this.valids.map(letter => letter ?? '.').join('')
+            const wrongSpotPattern = this.wrongSpots.map((wrongSpotLetters) => {
+                if (wrongSpotLetters.size) {
+                    return `[^${Array.from(wrongSpotLetters).join('')}]`
+                }
+
+                return '.'
+            }).join('')
+
+            const inWordLetters = this.wrongSpots.reduce((inWordLetters, wrongSpotLetters) => {
+                wrongSpotLetters.forEach(letter => inWordLetters.add(letter))
+                return inWordLetters
+            }, new Set())
+
+            return this.dictionary
+                .filter(word => !word.match(new RegExp(`[${Array.from(this.notInWord).join('')}]`)))
+                .filter((word) => {
+                    for (const letter of inWordLetters) {
+                        if (!word.includes(letter)) {
+                            return false
+                        }
+                    }
+
+                    return true
+                })
+                .filter(word => word.match(new RegExp(validPattern)))
+                .filter(word => word.match(new RegExp(wrongSpotPattern)))
+        },
     },
     methods: {
         addLetter(letter) {
@@ -176,6 +225,22 @@ export default {
     &-label {
         text-align: center;
         color: var(--color-headline);
+    }
+
+    &-words {
+        display: grid;
+        grid-template-columns: repeat(2, max-content);
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        font-size: 1.5em;
+    }
+
+    &-word {
+        margin-bottom: .5em;
+        padding-left: .5em;
+        padding-right: .5em;
     }
 }
 </style>

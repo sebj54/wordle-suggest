@@ -1,6 +1,6 @@
 <template>
     <div>
-        <wordle-grid />
+        <wordle-grid :dictionary="dictionary" />
     </div>
 </template>
 
