@@ -1,103 +1,111 @@
 <template>
-    <h2 class="wordle-grid-label">
-        Pas dans le mot&nbsp;:
-    </h2>
+    <div
+        class="wordle-grid-wrapper"
+        :style="`--count: ${count};`"
+    >
+        <h2 class="wordle-grid-label">
+            {{ $t('notInWord') }}
+        </h2>
 
-    <div class="wordle-grid -not-in-word">
-        <wordle-letter
-            v-for="letter in notInWord"
-            :key="letter"
-            :letter="letter"
-            not-in-word
-            @click="removeNotInWord(letter)"
-        />
-
-        <wordle-letter
-            :letter="isAdding.isNotInWord ? '' : '+'"
-            :not-in-word="isAdding.isNotInWord"
-            @click="toggleAddNotInWordMode"
-        />
-    </div>
-
-    <h2 class="wordle-grid-label">
-        Dans le mot&nbsp;:
-    </h2>
-
-    <div class="wordle-grid">
-        <template
-            v-for="(valid, index) in valids"
-            :key="index"
-        >
-            <wordle-letter
-                :column="index + 1"
-                :row="1"
-                :letter="valid || (isAdding.index === index ? '' : '+')"
-                :valid="Boolean(valid) || (isAdding.index === index && isAdding.isValid)"
-                :wrong-spot="(isAdding.index === index && isAdding.isValid === false)"
-                @click="valid ? removeValid(index) : toggleAddMode(index)"
-            />
-
-            <template v-if="!valid && isAdding.index === index && isAdding.isValid === null">
+        <template v-if="valids && wrongSpots && notInWord">
+            <div class="wordle-grid -not-in-word">
                 <wordle-letter
-                    :column="index + 1"
-                    :row="2"
-                    letter="+"
-                    valid
-                    @click="toggleAddValidMode"
+                    v-for="letter in notInWord"
+                    :key="`not-in-word-${letter}`"
+                    :letter="letter"
+                    not-in-word
+                    @click.native="removeNotInWord(letter)"
                 />
 
                 <wordle-letter
-                    :column="index + 1"
-                    :row="3"
-                    letter="+"
-                    wrong-spot
-                    @click="toggleAddWrongSpotMode"
+                    :letter="isAdding.isNotInWord ? '' : '+'"
+                    :not-in-word="isAdding.isNotInWord"
+                    @click.native="toggleAddNotInWordMode"
                 />
-            </template>
-        </template>
+            </div>
 
-        <template
-            v-for="(wrongSpot, index) in wrongSpots"
-            :key="index"
-        >
-            <wordle-letter
-                v-for="(wrongSpotLetter, letterIndex) in wrongSpot"
-                :key="`${index}-${letterIndex}`"
-                tag="button"
-                :column="index + 1"
-                :row="(isAdding.index === index && isAdding.isValid === null ? 4 : 2) + letterIndex"
-                :letter="wrongSpotLetter"
-                wrong-spot
-                @click="removeWrongSpot(index, wrongSpotLetter)"
+            <h2 class="wordle-grid-label">
+                {{ $t('inWord') }}
+            </h2>
+
+            <div class="wordle-grid">
+                <template
+                    v-for="(valid, index) in valids"
+                >
+                    <wordle-letter
+                        :key="`valid-${index}`"
+                        :column="index + 1"
+                        :row="1"
+                        :letter="valid || (isAdding.index === index ? '' : '+')"
+                        :valid="Boolean(valid) || (isAdding.index === index && isAdding.isValid)"
+                        :wrong-spot="(isAdding.index === index && isAdding.isValid === false)"
+                        @click.native="valid ? removeValid(index) : toggleAddMode(index)"
+                    />
+
+                    <template v-if="!valid && isAdding.index === index && isAdding.isValid === null">
+                        <wordle-letter
+                            :key="`valid+-${index}`"
+                            :column="index + 1"
+                            :row="2"
+                            letter="+"
+                            valid
+                            @click.native="toggleAddValidMode"
+                        />
+
+                        <wordle-letter
+                            :key="`wrong-spot+-${index}`"
+                            :column="index + 1"
+                            :row="3"
+                            letter="+"
+                            wrong-spot
+                            @click.native="toggleAddWrongSpotMode"
+                        />
+                    </template>
+                </template>
+
+                <template
+                    v-for="(wrongSpot, index) in wrongSpots"
+                >
+                    <wordle-letter
+                        v-for="(wrongSpotLetter, letterIndex) in wrongSpot"
+                        :key="`wrong-spot-${index}-${letterIndex}`"
+                        tag="button"
+                        :column="index + 1"
+                        :row="(isAdding.index === index && isAdding.isValid === null ? 4 : 2) + letterIndex"
+                        :letter="wrongSpotLetter"
+                        wrong-spot
+                        @click.native="removeWrongSpot(index, wrongSpotLetter)"
+                    />
+                </template>
+            </div>
+
+            <h2 class="wordle-grid-label">
+                {{ $tc('possibleWords', wordsFiltered.length, { count: wordsFiltered.length }) }}
+            </h2>
+
+            <ul class="wordle-grid-words">
+                <li
+                    v-for="word in wordsFiltered"
+                    :key="word"
+                    class="wordle-grid-word"
+                >
+                    {{ word }}
+                </li>
+            </ul>
+
+            <wordle-keyboard
+                v-if="(isAdding.index !== null && isAdding.isValid !== null) || isAdding.isNotInWord"
+                :not-in-word="notInWord"
+                :valids="valids"
+                :wrong-spots="wrongSpots"
+                @letter="addLetter"
             />
         </template>
     </div>
-
-    <h2 class="wordle-grid-label">
-        {{ wordsFiltered.length }} mots possibles&nbsp;:
-    </h2>
-
-    <ul class="wordle-grid-words">
-        <li
-            v-for="(word, index) in wordsFiltered"
-            :key="index"
-            class="wordle-grid-word"
-        >
-            {{ word }}
-        </li>
-    </ul>
-
-    <wordle-keyboard
-        v-if="(isAdding.index !== null && isAdding.isValid !== null) || isAdding.isNotInWord"
-        :not-in-word="notInWord"
-        :valids="valids"
-        :wrong-spots="wrongSpots"
-        @letter="addLetter"
-    />
 </template>
 
 <script>
-import { ref } from 'vue'
+import Vue from 'vue'
 
 export default {
     props: {
@@ -110,24 +118,6 @@ export default {
             required: true,
         },
     },
-    setup(props) {
-        const valids = new Array(props.count)
-        const wrongSpots = new Array(props.count)
-
-        valids.fill(undefined)
-
-        for (let i = 0; i < props.count; i++) {
-            wrongSpots[i] = new Set()
-        }
-
-        const notInWord = new Set()
-
-        return {
-            valids: ref(valids),
-            wrongSpots: ref(wrongSpots),
-            notInWord: ref(notInWord),
-        }
-    },
     data() {
         return {
             isAdding: {
@@ -135,10 +125,47 @@ export default {
                 isValid: null,
                 isNotInWord: null,
             },
+            valids: [],
+            wrongSpots: [],
+            notInWord: new Set(),
+            wordsFiltered: [],
         }
     },
-    computed: {
-        wordsFiltered() {
+    fetch() {
+        this.valids.length = this.count
+        this.wrongSpots.length = this.count
+
+        this.valids.fill(undefined)
+
+        for (let i = 0; i < this.count; i++) {
+            Vue.set(this.wrongSpots, i, new Set())
+        }
+
+        this.notInWord.clear()
+
+        this.wordsFiltered = this.dictionary
+    },
+    watch: {
+        dictionary() {
+            this.filterWords()
+        },
+    },
+    methods: {
+        addLetter(letter) {
+            if (this.isAdding.isNotInWord) {
+                this.notInWord.add(letter)
+            } else if (this.isAdding.index !== null) {
+                if (this.isAdding.isValid) {
+                    Vue.set(this.valids, this.isAdding.index, letter)
+                } else {
+                    this.wrongSpots[this.isAdding.index].add(letter)
+                }
+            }
+
+            this.toggleAddMode()
+            this.filterWords()
+        },
+        filterWords() {
             const validPattern = this.valids.map(letter => letter ?? '.').join('')
             const wrongSpotPattern = this.wrongSpots.map((wrongSpotLetters) => {
                 if (wrongSpotLetters.size) {
@@ -153,7 +180,7 @@ export default {
                 return inWordLetters
             }, new Set())
 
-            return this.dictionary
+            this.wordsFiltered = this.dictionary
                 .filter(word => !word.match(new RegExp(`[${Array.from(this.notInWord).join('')}]`)))
                 .filter((word) => {
                     for (const letter of inWordLetters) {
@@ -167,29 +194,17 @@ export default {
                 .filter(word => word.match(new RegExp(validPattern)))
                 .filter(word => word.match(new RegExp(wrongSpotPattern)))
         },
-    },
-    methods: {
-        addLetter(letter) {
-            if (this.isAdding.isNotInWord) {
-                this.notInWord.add(letter)
-            } else if (this.isAdding.index !== null) {
-                if (this.isAdding.isValid) {
-                    this.valids[this.isAdding.index] = letter
-                } else {
-                    this.wrongSpots[this.isAdding.index].add(letter)
-                }
-            }
-
-            this.toggleAddMode()
-        },
         removeNotInWord(letter) {
             this.notInWord.delete(letter)
+            this.filterWords()
         },
         removeValid(index) {
-            this.valids[index] = undefined
+            Vue.set(this.valids, index, undefined)
+            this.filterWords()
         },
         removeWrongSpot(index, letter) {
             this.wrongSpots[index].delete(letter)
+            this.filterWords()
         },
         toggleAddMode(index) {
             if (index !== undefined && this.isAdding.index === null) {
@@ -217,7 +232,7 @@ export default {
 <style lang="scss">
 .wordle-grid {
     display: grid;
-    grid-template-columns: repeat(v-bind(count), minmax(32px, 64px));
+    grid-template-columns: repeat(var(--count), minmax(32px, 64px));
     grid-gap: var(--grid-gap);
     justify-content: center;
     margin-bottom: 2em;

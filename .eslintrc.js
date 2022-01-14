@@ -4,10 +4,13 @@ module.exports = {
         browser: true,
         node: true,
     },
+    parserOptions: {
+        parser: '@babel/eslint-parser',
+        requireConfigFile: false,
+    },
     extends: [
-        'standard',
+        '@nuxtjs',
         'plugin:nuxt/recommended',
-        'plugin:vue/vue3-recommended',
     ],
     plugins: [
     ],
@@ -19,7 +22,6 @@ module.exports = {
             },
         },
     ],
-    // add your custom rules here
     rules: {
         'comma-dangle': [
             'error',

@@ -1,11 +1,13 @@
 <template>
-    <header>
-        <h1>Wordle Suggest</h1>
-    </header>
+    <div>
+        <header>
+            <h1>Wordle Suggest</h1>
+        </header>
 
-    <main>
-        <slot />
-    </main>
+        <main>
+            <nuxt />
+        </main>
+    </div>
 </template>
 
 <style lang="scss">

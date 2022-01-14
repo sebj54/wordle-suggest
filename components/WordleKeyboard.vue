@@ -1,12 +1,14 @@
 <template>
-    <div class="wordle-keyboard">
+    <div
+        class="wordle-keyboard"
+        :style="`--longest-line: ${longestLine};`"
+    >
         <template
             v-for="(keys, row) in layout"
-            :key="row"
         >
             <wordle-keyboard-key
                 v-for="(key, index) in keys"
-                :key="key"
+                :key="`${row}-${key}`"
                 :letter="key"
                 :not-in-word="notInWord"
                 :valids="valids"
@@ -63,7 +65,7 @@ export default {
     right: -50%;
     transform: translateX(-50%);
     display: grid;
-    grid-template-columns: repeat(v-bind(longestLine), minmax(32px, 1fr));
+    grid-template-columns: repeat(var(--longest-line), minmax(32px, 1fr));
     grid-gap: var(--grid-gap);
     max-width: var(--max-width);
     padding-top: var(--grid-gap);

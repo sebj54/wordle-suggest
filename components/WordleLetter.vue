@@ -1,18 +1,21 @@
 <template>
-    <component
-        :is="$attrs.onClick ? 'button' : 'div'"
+    <button
+        type="button"
         class="wordle-letter-wrapper"
         :class="{
             '-not-in-word': notInWord,
             '-valid': valid,
             '-wrong-spot': wrongSpot,
         }"
-        v-bind="$attrs.onClick ? { type: 'button' } : null"
+        :style="`
+            --row: ${row};
+            --column: ${column};
+        `"
     >
         <span class="wordle-letter">
             {{ letter }}
         </span>
-    </component>
+    </button>
 </template>
 
 <script>
@@ -57,8 +60,8 @@ export default {
 
     &-wrapper {
         position: relative;
-        grid-column-start: v-bind(column);
-        grid-row-start: v-bind(row);
+        grid-column-start: var(--column);
+        grid-row-start: var(--row);
         width: 100%;
         padding: 0;
         padding-top: 100%;
