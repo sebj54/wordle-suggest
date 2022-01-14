@@ -9,7 +9,7 @@
             :key="letter"
             :letter="letter"
             not-in-word
-            @click="toggleAddNotInWordMode"
+            @click="removeNotInWord(letter)"
         />
 
         <wordle-letter
@@ -75,12 +75,39 @@
 
     <wordle-keyboard
         v-if="(isAdding.index !== null && isAdding.isValid !== null) || isAdding.isNotInWord"
+        :not-in-word="notInWord"
+        :valids="valids"
+        :wrong-spots="wrongSpots"
         @letter="addLetter"
     />
 </template>
 
 <script>
 export default {
+    props: {
+        count: {
+            type: Number,
+            default: 5,
+        },
+    },
+    setup(props) {
+        const valids = new Array(props.count)
+        const wrongSpots = new Array(props.count)
+
+        valids.fill(undefined)
+
+        for (let i = 0; i < props.count; i++) {
+            wrongSpots[i] = new Set()
+        }
+
+        const notInWord = new Set()
+
+        return {
+            valids,
+            wrongSpots,
+            notInWord,
+        }
+    },
     data() {
         return {
             isAdding: {
@@ -88,14 +115,7 @@ export default {
                 isValid: null,
                 isNotInWord: null,
             },
-            count: 0,
-            notInWord: new Set(),
-            valids: [],
-            wrongSpots: [],
         }
-    },
-    created() {
-        this.init(5)
     },
     methods: {
         addLetter(letter) {
@@ -110,20 +130,6 @@ export default {
             }
 
             this.toggleAddMode()
-        },
-        init(count) {
-            this.count = count
-
-            this.valids.length = count
-            this.wrongSpots.length = count
-
-            this.valids.fill(undefined)
-
-            for (let i = 0; i < count; i++) {
-                this.wrongSpots[i] = new Set()
-            }
-
-            this.notInWord.clear()
         },
         removeNotInWord(letter) {
             this.notInWord.delete(letter)

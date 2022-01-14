@@ -4,19 +4,19 @@
             v-for="(keys, row) in layout"
             :key="row"
         >
-            <button
+            <wordle-keyboard-key
                 v-for="(key, index) in keys"
                 :key="key"
-                type="button"
-                class="wordle-keyboard-key"
+                :letter="key"
+                :not-in-word="notInWord"
+                :valids="valids"
+                :wrong-spots="wrongSpots"
                 :style="`
                     --row: ${row + 1};
                     --column: ${index + 1 + ((longestLine - keys.length) / 2)};
                 `"
-                @click="$emit('letter', key)"
-            >
-                <span class="wordle-keyboard-key-letter">{{ key }}</span>
-            </button>
+                @letter="$emit('letter', key)"
+            />
         </template>
     </div>
 </template>
@@ -31,6 +31,20 @@ const layout = [
 const longestLine = Math.max.apply(null, layout.map(line => line.length))
 
 export default {
+    props: {
+        notInWord: {
+            type: Set,
+            required: true,
+        },
+        valids: {
+            type: Array,
+            required: true,
+        },
+        wrongSpots: {
+            type: Array,
+            required: true,
+        },
+    },
     emits: ['letter'],
     data() {
         return {
@@ -50,6 +64,9 @@ export default {
     display: grid;
     grid-template-columns: repeat(v-bind(longestLine), minmax(32px, 1fr));
     grid-gap: var(--grid-gap);
+    padding-top: var(--grid-gap);
+    padding-bottom: var(--grid-gap);
+    background-color: var(--color-bg);
 
     &-key {
         position: relative;
@@ -57,9 +74,24 @@ export default {
         grid-row-start: var(--row);
         padding-top: 120%;
         border-width: 0;
-        border-radius: 4px;
-        background-color: var(--color-bg-lighter);
-        color: var(--color-headline);
+        border-radius: 2px;
+        background-color: var(--color-text);
+        color: var(--color-bg);
+
+        &.-not-in-word {
+            background-color: var(--color-bg-lighter);
+            color: var(--color-headline);
+            cursor: not-allowed;
+        }
+
+        &.-valid {
+            background-color: var(--color-green);
+        }
+
+        &.-wrong-spot {
+            background-color: var(--color-warning);
+            color: var(--color-warning-text);
+        }
 
         &-letter {
             position: absolute;
