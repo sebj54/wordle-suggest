@@ -5,18 +5,16 @@
             :key="index"
         >
             <wordle-letter
-                :tag="valid ? 'div' : 'button'"
                 :column="index + 1"
                 :row="1"
                 :letter="valid || (isAdding.index === index ? '' : '+')"
-                :valid="Boolean(valid)"
-                @click="toggleAddMode(index)"
+                :valid="Boolean(valid) || (isAdding.index === index && isAdding.isValid)"
+                :wrong-spot="(isAdding.index === index && isAdding.isValid === false)"
+                @click="valid ? removeValid(index) : toggleAddMode(index)"
             />
-            <!-- TODO: Remove letter on click -->
 
-            <template v-if="!valid && isAdding.index === index">
+            <template v-if="!valid && isAdding.index === index && isAdding.isValid === null">
                 <wordle-letter
-                    tag="button"
                     :column="index + 1"
                     :row="2"
                     letter="+"
@@ -25,7 +23,6 @@
                 />
 
                 <wordle-letter
-                    tag="button"
                     :column="index + 1"
                     :row="3"
                     letter="+"
@@ -44,9 +41,10 @@
                 :key="`${index}-${letterIndex}`"
                 tag="button"
                 :column="index + 1"
-                :row="4 + letterIndex"
+                :row="(isAdding.index === index && isAdding.isValid === null ? 4 : 2) + letterIndex"
                 :letter="wrongSpotLetter"
                 wrong-spot
+                @click="removeWrongSpot(index, letterIndex)"
             />
             <!-- TODO: Remove letter -->
         </template>
@@ -99,8 +97,19 @@ export default {
                 this.wrongSpots[i] = []
             }
         },
+        removeValid(index) {
+            this.valids[index] = undefined
+        },
+        removeWrongSpot(index, letterIndex) {
+            this.wrongSpots[index].splice(letterIndex, 1)
+        },
         toggleAddMode(index) {
-            this.isAdding.index = index ?? null
+            if (index !== undefined && this.isAdding.index === null) {
+                this.isAdding.index = index
+            } else {
+                this.isAdding.index = null
+            }
+
             this.isAdding.isValid = null
         },
         toggleAddValidMode() {

@@ -1,12 +1,12 @@
 <template>
     <component
-        :is="tag"
+        :is="$attrs.onClick ? 'button' : 'div'"
         class="wordle-letter-wrapper"
         :class="{
             '-valid': valid,
             '-wrong-spot': wrongSpot,
         }"
-        v-bind="tag === 'button' ? { type: 'button' } : null"
+        v-bind="$attrs.onClick ? { type: 'button' } : null"
     >
         <span class="wordle-letter">
             {{ letter }}
@@ -28,10 +28,6 @@ export default {
         row: {
             type: [Number, String],
             default: 'auto',
-        },
-        tag: {
-            type: String,
-            default: 'div',
         },
         valid: {
             type: Boolean,
