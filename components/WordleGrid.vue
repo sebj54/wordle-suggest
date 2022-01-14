@@ -83,6 +83,8 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+
 export default {
     props: {
         count: {
@@ -103,9 +105,9 @@ export default {
         const notInWord = new Set()
 
         return {
-            valids,
-            wrongSpots,
-            notInWord,
+            valids: ref(valids),
+            wrongSpots: ref(wrongSpots),
+            notInWord: ref(notInWord),
         }
     },
     data() {
