@@ -11,6 +11,7 @@
 <style lang="scss">
 :root {
     --color-bg: #0f0e17;
+    --color-bg-lighter: #36334b;
     --color-text: #a7a9be;
     --color-headline: #fffffe;
     --color-primary: #f25f4c;
@@ -55,8 +56,7 @@ header {
 }
 
 main {
-    display: flex;
-    flex-direction: column;
+    position: relative;
     flex-grow: 1;
     padding: 1em;
 }

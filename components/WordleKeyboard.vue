@@ -43,16 +43,23 @@ export default {
 
 <style lang="scss">
 .wordle-keyboard {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: grid;
     grid-template-columns: repeat(v-bind(longestLine), minmax(32px, 1fr));
     grid-gap: var(--grid-gap);
-    margin-top: auto;
 
     &-key {
         position: relative;
         grid-column-start: var(--column);
         grid-row-start: var(--row);
         padding-top: 120%;
+        border-width: 0;
+        border-radius: 4px;
+        background-color: var(--color-bg-lighter);
+        color: var(--color-headline);
 
         &-letter {
             position: absolute;
