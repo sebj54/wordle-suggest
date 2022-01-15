@@ -2,6 +2,8 @@
     <div>
         <header>
             <h1>Wordle Suggest</h1>
+
+            <lang-switcher />
         </header>
 
         <main>
@@ -40,6 +42,8 @@ body {
 }
 
 header {
+    display: flex;
+    align-items: center;
     border-bottom-style: solid;
     border-bottom-width: 1px;
     border-bottom-color: var(--color-text);
