@@ -62,6 +62,8 @@ main {
 }
 
 button {
+    font-family: inherit;
+    font-weight: 700;
     cursor: pointer;
 }
 </style>
