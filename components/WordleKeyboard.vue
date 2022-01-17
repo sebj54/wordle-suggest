@@ -1,36 +1,38 @@
 <template>
-    <div
-        class="wordle-keyboard"
-        :style="`--longest-line: ${longestLine};`"
-    >
-        <template
+    <div class="wordle-keyboard">
+        <div
             v-for="(keys, row) in layout"
+            :key="row"
+            class="wordle-keyboard-row"
         >
             <wordle-keyboard-key
-                v-for="(key, index) in keys"
-                :key="`${row}-${key}`"
+                v-for="key in keys"
+                :key="key"
                 :letter="key"
                 :not-in-word="notInWord"
                 :valids="valids"
                 :wrong-spots="wrongSpots"
-                :style="`
-                    --row: ${row + 1};
-                    --column: ${index + 1 + ((longestLine - keys.length) / 2)};
-                `"
+                :style="{
+                    '--longest-line': longestLine,
+                }"
                 @letter="$emit('letter', key)"
             />
-        </template>
+        </div>
     </div>
 </template>
 
 <script>
-const layout = [
+const layoutEn = [
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+]
+
+const layoutFr = [
     ['A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M'],
     ['W', 'X', 'C', 'V', 'B', 'N'],
 ]
-
-const longestLine = Math.max.apply(null, layout.map(line => line.length))
 
 export default {
     props: {
@@ -50,8 +52,17 @@ export default {
     emits: ['letter'],
     data() {
         return {
-            layout,
-            longestLine,
+            layout: layoutEn,
+        }
+    },
+    computed: {
+        longestLine() {
+            return Math.max.apply(null, this.layout.map(line => line.length))
+        },
+    },
+    created() {
+        if (this.$i18n.locale === 'fr') {
+            this.layout = layoutFr
         }
     },
 }
@@ -64,19 +75,22 @@ export default {
     left: 50%;
     right: -50%;
     transform: translateX(-50%);
-    display: grid;
-    grid-template-columns: repeat(var(--longest-line), minmax(32px, 1fr));
-    grid-gap: var(--grid-gap);
+    display: block;
     max-width: var(--max-width);
     padding-top: var(--grid-gap);
     padding-bottom: var(--grid-gap);
     background-color: var(--color-bg);
 
+    &-row {
+        display: flex;
+        justify-content: center;
+    }
+
     &-key {
         position: relative;
-        grid-column-start: var(--column);
-        grid-row-start: var(--row);
-        padding-top: 120%;
+        width: calc(100% / var(--longest-line) - var(--grid-gap));
+        margin: calc(var(--grid-gap) / 2);
+        padding-top: calc(120% / var(--longest-line) - var(--grid-gap));
         border-width: 0;
         border-radius: 2px;
         background-color: var(--color-text);
