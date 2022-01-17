@@ -58,6 +58,10 @@ header {
         margin: 0;
         padding: .25em;
 
+        @media (max-width: 400px) {
+            font-size: 1.5em;
+        }
+
         a {
             color: inherit;
             text-decoration: none;
