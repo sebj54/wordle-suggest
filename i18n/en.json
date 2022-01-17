@@ -2,5 +2,13 @@
     "lang": "Lang",
     "notInWord": "Not in word:",
     "inWord": "In word:",
-    "possibleWords": "No possible word. Are you sure you correctly set letters? | {count} possible word: | {count} possible words:"
+    "possibleWords": "No possible word. Are you sure you correctly set letters? | {count} possible word: | {count} possible words:",
+    "whatisit": "What is Wordle Suggest?",
+    "introduction": "Wordle Suggest allows you to find possible words for several versions of the Wordle game, when you are out of inspiration. Enter all the clues you have to display the possible words.",
+    "about": "Wordle Suggest is developed by ",
+    "source": ", (source on ",
+    "gameVersion": "Game version",
+    "gameVersionBy": "by {author}",
+    "requestVersion": "You know another game version? Request it on ",
+    "keyboard": "Keyboard"
 }

@@ -22,16 +22,22 @@
 </template>
 
 <script>
-const layoutEn = [
+const layoutQwerty = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
     ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
 ]
 
-const layoutFr = [
+const layoutAzerty = [
     ['A', 'Z', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['Q', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M'],
     ['W', 'X', 'C', 'V', 'B', 'N'],
+]
+
+const layoutQwertz = [
+    ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['Y', 'X', 'C', 'V', 'B', 'N', 'M'],
 ]
 
 export default {
@@ -52,7 +58,7 @@ export default {
     emits: ['letter'],
     data() {
         return {
-            layout: layoutEn,
+            layout: layoutQwerty,
         }
     },
     computed: {
@@ -60,9 +66,11 @@ export default {
             return Math.max.apply(null, this.layout.map(line => line.length))
         },
     },
-    created() {
-        if (this.$i18n.locale === 'fr') {
-            this.layout = layoutFr
+    mounted() {
+        if (window.localStorage.keyboardLayout === 'AZERTY') {
+            this.layout = layoutAzerty
+        } else if (window.localStorage.keyboardLayout === 'QWERTZ') {
+            this.layout = layoutQwertz
         }
     },
 }

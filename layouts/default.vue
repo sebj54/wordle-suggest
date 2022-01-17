@@ -1,7 +1,11 @@
 <template>
     <div>
         <header>
-            <h1>Wordle Suggest</h1>
+            <h1>
+                <nuxt-link :to="localePath('/')">
+                    Wordle Suggest
+                </nuxt-link>
+            </h1>
 
             <lang-switcher />
         </header>
@@ -48,12 +52,20 @@ header {
     border-bottom-width: 1px;
     border-bottom-color: var(--color-text);
     text-align: center;
-    color: var(--color-headline);
     text-transform: uppercase;
 
     h1 {
         margin: 0;
         padding: .25em;
+
+        a {
+            color: inherit;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 }
 
@@ -61,9 +73,33 @@ main {
     padding: 1em;
 }
 
+a {
+    color: var(--color-primary);
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
 button {
     font-family: inherit;
     font-weight: 700;
     cursor: pointer;
+
+    &:focus {
+        outline-color: var(--color-primary);
+    }
+}
+
+h1,
+h2 {
+    margin-top: 1em;
+    margin-bottom: .5em;
+    color: var(--color-headline);
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1em;
 }
 </style>
