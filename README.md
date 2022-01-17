@@ -1,4 +1,12 @@
-# wordle-suggest
+# Wordle Suggest
+
+Wordle Suggest allows you to find possible words for several versions of the Wordle game, when you are out of inspiration. Enter all the clues you have to display the possible words.
+
+👉 [Test it online](https://wordle-suggest.sebjean.com)
+
+Special thanks to all Wordle games developers! 🙏
+
+Contributions are welcome! Feel free to discuss features or bugs before developing.
 
 ## Build Setup
 
