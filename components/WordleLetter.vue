@@ -71,6 +71,22 @@ export default {
         background-color: var(--color-bg);
         color: var(--color-headline);
 
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: transparent;
+        }
+
+        &:hover {
+            &::before {
+                background-color: rgba(255, 255, 255, .2);
+            }
+        }
+
         &.-not-in-word {
             background-color: var(--color-bg-lighter);
         }

@@ -61,8 +61,13 @@ export default {
         display: flex;
         align-items: center;
         border-width: 0;
+        border-radius: 4px;
         background-color: transparent;
         color: currentColor;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, .2);
+        }
 
         &-icon {
             width: 1.5em;
@@ -102,6 +107,10 @@ export default {
         display: block;
         padding: .5em;
         color: currentColor;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, .2);
+        }
     }
 }
 </style>
