@@ -3,17 +3,25 @@ export default {
     target: 'static',
 
     // Global page headers: https://go.nuxtjs.dev/config-head
-    head: {
-        title: 'wordle-suggest',
-        meta: [
-            { charset: 'utf-8' },
-            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: '' },
-            { name: 'format-detection', content: 'telephone=no' },
-        ],
-        link: [
-            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        ],
+    head() {
+        const i18nHead = this.$nuxtI18nHead ? this.$nuxtI18nHead({ addSeoAttributes: true }) : { meta: [], link: [] }
+        const description = this.$t ? this.$t('introduction') : 'Wordle Suggest allows you to find possible words for several versions of the Wordle game, when you are out of inspiration.'
+
+        return {
+            htmlAttrs: i18nHead.htmlAttrs,
+            title: 'Wordle Suggest',
+            meta: [
+                { charset: 'utf-8' },
+                { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+                { hid: 'description', name: 'description', content: description },
+                { name: 'format-detection', content: 'telephone=no' },
+                ...i18nHead.meta,
+            ],
+            link: [
+                { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+                ...i18nHead.link,
+            ],
+        }
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
@@ -45,16 +53,19 @@ export default {
         locales: [
             {
                 code: 'en',
+                iso: 'en-US',
                 name: 'English',
                 file: 'en.json',
             },
             {
                 code: 'fr',
+                iso: 'fr-FR',
                 name: 'Français',
                 file: 'fr.json',
             },
         ],
         defaultLocale: 'en',
+        baseUrl: 'https://wordle-suggest.sebjean.com',
         langDir: '~/i18n',
         vueI18n: {
             fallbackLocale: 'en',
