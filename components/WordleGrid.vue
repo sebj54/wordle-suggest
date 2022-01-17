@@ -150,6 +150,15 @@ export default {
             this.filterWords()
         },
     },
+    mounted() {
+        window.addEventListener('keydown', (event) => {
+            if (/^[a-zA-Z]$/.test(event.key)) {
+                if (this.isAdding.isNotInWord || this.isAdding.index !== null) {
+                    this.addLetter(event.key.toUpperCase())
+                }
+            }
+        })
+    },
     methods: {
         addLetter(letter) {
             if (this.isAdding.isNotInWord) {
