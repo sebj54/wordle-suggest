@@ -105,8 +105,8 @@ export default {
                     link: 'lemot-louanben',
                 },
                 {
-                    name: 'Le Mot 🇫🇷',
-                    author: 'solitaire-play.com',
+                    name: 'LeMOT 🇫🇷',
+                    author: '@LeMotLeJeu',
                     link: 'lemot-solitaire-play',
                 },
             ],
