@@ -184,23 +184,23 @@ export default {
         },
         filterWords() {
             if (this.dictionary) {
-                const validPattern = this.valids.map(letter => letter ?? '.').join('')
-                const wrongSpotPattern = this.wrongSpots.map((wrongSpotLetters) => {
-                    if (wrongSpotLetters.size) {
-                        return `[^${Array.from(wrongSpotLetters).join('')}]`
-                    }
+                let wordsFiltered = this.dictionary
 
-                    return '.'
-                }).join('')
+                if (this.notInWord.size) {
+                    const excludedLettersPattern = new RegExp(`[${Array.from(this.notInWord).join('')}]`)
 
-                const inWordLetters = this.wrongSpots.reduce((inWordLetters, wrongSpotLetters) => {
-                    wrongSpotLetters.forEach(letter => inWordLetters.add(letter))
-                    return inWordLetters
-                }, new Set())
+                    wordsFiltered = wordsFiltered.filter(word => !word.match(excludedLettersPattern))
+                }
 
-                this.wordsFiltered = this.dictionary
-                    .filter(word => !word.match(new RegExp(`[${Array.from(this.notInWord).join('')}]`)))
-                    .filter((word) => {
+                const hasWrongSpots = this.wrongSpots.some(wrongSpotLetters => wrongSpotLetters.size)
+
+                if (hasWrongSpots) {
+                    const inWordLetters = this.wrongSpots.reduce((inWordLetters, wrongSpotLetters) => {
+                        wrongSpotLetters.forEach(letter => inWordLetters.add(letter))
+                        return inWordLetters
+                    }, new Set())
+
+                    wordsFiltered = wordsFiltered.filter((word) => {
                         for (const letter of inWordLetters) {
                             if (!word.includes(letter)) {
                                 return false
@@ -209,8 +209,29 @@ export default {
 
                         return true
                     })
-                    .filter(word => word.match(new RegExp(validPattern)))
-                    .filter(word => word.match(new RegExp(wrongSpotPattern)))
+                }
+
+                const hasValid = this.valids.some(valid => valid)
+
+                if (hasValid) {
+                    const validPattern = this.valids.map(letter => letter ?? '.').join('')
+
+                    wordsFiltered = wordsFiltered.filter(word => word.match(new RegExp(validPattern)))
+                }
+
+                if (hasWrongSpots) {
+                    const wrongSpotPattern = this.wrongSpots.map((wrongSpotLetters) => {
+                        if (wrongSpotLetters.size) {
+                            return `[^${Array.from(wrongSpotLetters).join('')}]`
+                        }
+
+                        return '.'
+                    }).join('')
+
+                    wordsFiltered = wordsFiltered.filter(word => word.match(new RegExp(wrongSpotPattern)))
+                }
+
+                this.wordsFiltered = Object.freeze(wordsFiltered)
             }
         },
         removeNotInWord(letter) {
