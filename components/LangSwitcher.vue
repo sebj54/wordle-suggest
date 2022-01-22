@@ -62,6 +62,13 @@ export default {
     margin-left: auto;
     color: var(--color-headline);
 
+    &-toggle,
+    &-link {
+        transition-property: background-color;
+        transition-timing-function: ease-out;
+        transition-duration: .2s;
+    }
+
     &-toggle {
         display: flex;
         align-items: center;

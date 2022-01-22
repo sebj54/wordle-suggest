@@ -95,26 +95,41 @@ export default {
     }
 
     &-key {
+        --color-button-shadow: rgba(255, 255, 255, .4);
+
         position: relative;
         width: calc(100% / var(--longest-line) - var(--grid-gap));
-        margin: calc(var(--grid-gap) / 2);
+        margin-top: calc(var(--grid-gap) / 1.5);
+        margin-bottom: calc(var(--grid-gap) / 1.5);
+        margin-left: calc(var(--grid-gap) / 2);
+        margin-right: calc(var(--grid-gap) / 2);
         padding-top: calc(120% / var(--longest-line) - var(--grid-gap));
         border-width: 0;
-        border-radius: 2px;
+        border-radius: 5px;
         background-color: var(--color-text);
         color: var(--color-bg);
+        box-shadow: 0 5px var(--color-button-shadow);
+        transition-property: transform, box-shadow;
+        transition-timing-function: ease-out;
+        transition-duration: .2s;
 
         &.-not-in-word {
-            background-color: var(--color-bg-lighter);
+            --color-button-shadow: var(--color-bg-lighter);
+
+            background-color: var(--color-bg-lightest);
             color: var(--color-headline);
             cursor: not-allowed;
         }
 
         &.-valid {
+            --color-button-shadow: var(--color-green-darker);
+
             background-color: var(--color-green);
         }
 
         &.-wrong-spot {
+            --color-button-shadow: var(--color-warning-darker);
+
             background-color: var(--color-warning);
             color: var(--color-warning-text);
         }

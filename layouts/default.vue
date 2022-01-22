@@ -37,17 +37,21 @@ export default {
 <style lang="scss">
 :root {
     --color-bg: #0f0e17;
+    --color-bg-darker: #0f0e17;
     --color-bg-lighter: #36334b;
+    --color-bg-lightest: #565175;
     --color-text: #a7a9be;
     --color-headline: #fffffe;
     --color-primary: #f25f4c;
     --color-secondary: #e53170;
     --color-green: #27ae60;
+    --color-green-darker: #207945;
     --color-warning: #ffd803;
+    --color-warning-darker: #b39b17;
     --color-warning-text: #272343;
 
     --max-width: 500px;
-    --grid-gap: 6px;
+    --grid-gap: 8px;
 }
 
 html {
