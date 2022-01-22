@@ -124,4 +124,8 @@ p {
     margin-top: 0;
     margin-bottom: 1em;
 }
+
+svg {
+    fill: currentColor;
+}
 </style>
