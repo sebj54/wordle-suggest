@@ -9,6 +9,7 @@
     "source": ", (source on ",
     "gameVersion": "Game version",
     "gameVersionBy": "by {author}",
+    "gameVersionBackLink": "Change",
     "requestVersion": "You know another game version? Request it on ",
     "keyboard": "Keyboard"
 }

@@ -66,14 +66,14 @@
 
         <div class="game-versions">
             <nuxt-link
-                v-for="(gameVersion, index) in gameVersions"
-                :key="index"
-                :to="localePath(gameVersion.link)"
-                class="game-version"
+                v-for="(gameVersion, key) in gameVersions"
+                :key="key"
+                :to="localePath(key)"
+                class="game-version-link"
             >
-                <span class="game-version-name">{{ gameVersion.name }}</span>
+                <span class="game-version-link-name">{{ gameVersion.name }}</span>
 
-                <span class="game-version-author">{{ $t('gameVersionBy', gameVersion) }}</span>
+                <span class="game-version-link-author">{{ $t('gameVersionBy', gameVersion) }}</span>
             </nuxt-link>
         </div>
 
@@ -90,26 +90,12 @@
 </template>
 
 <script>
+import gameVersions from '@/data/games.json'
+
 export default {
     data() {
         return {
-            gameVersions: [
-                {
-                    name: 'Wordle (original) 🇬🇧',
-                    author: '@powerlanguish',
-                    link: 'original',
-                },
-                {
-                    name: 'Le Mot 🇫🇷',
-                    author: '@louanben',
-                    link: 'lemot-louanben',
-                },
-                {
-                    name: 'LeMOT 🇫🇷',
-                    author: '@LeMotLeJeu',
-                    link: 'lemot-solitaire-play',
-                },
-            ],
+            gameVersions,
             keyboardLayout: 'QWERTY',
             availableKeyboardLayouts: [
                 'QWERTY',
@@ -138,7 +124,7 @@ export default {
     margin-bottom: .5em;
 }
 
-.game-version {
+.game-version-link {
     display: flex;
     flex-direction: column;
     margin: .5em;
