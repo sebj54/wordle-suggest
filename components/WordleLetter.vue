@@ -26,7 +26,7 @@ export default {
             default: 'auto',
         },
         letter: {
-            type: String,
+            type: [String, Number],
             default: null,
         },
         notInWord: {

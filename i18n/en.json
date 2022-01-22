@@ -1,5 +1,6 @@
 {
     "lang": "Lang",
+    "letterCount": "Letters count",
     "notInWord": "Not in word:",
     "inWord": "In word:",
     "possibleWords": "No possible word. Are you sure you correctly set letters? | {count} possible word: | {count} possible words:",

@@ -1,5 +1,6 @@
 {
     "lang": "Langue",
+    "letterCount": "Nombre de lettres",
     "notInWord": "Pas dans le mot :",
     "inWord": "Dans le mot :",
     "possibleWords": "Aucun mot possible. Êtes-vous sûr·e d‘avoir bien saisi les lettres ? | {count} mot possible : | {count} mots possibles :",

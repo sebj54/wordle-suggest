@@ -3,6 +3,22 @@
         class="wordle-grid-wrapper"
         :style="`--count: ${count};`"
     >
+        <template v-if="minCount && maxCount">
+            <h2 class="wordle-grid-label">
+                {{ $t('letterCount') }}
+            </h2>
+
+            <div class="wordle-grid -count">
+                <wordle-letter
+                    v-for="n in (maxCount - minCount + 1)"
+                    :key="`count-${minCount + n - 1}`"
+                    :letter="minCount + n - 1"
+                    :valid="count === minCount + n - 1"
+                    @click.native="count = minCount + n - 1"
+                />
+            </div>
+        </template>
+
         <h2 class="wordle-grid-label">
             {{ $t('notInWord') }}
         </h2>
@@ -111,9 +127,13 @@ import Vue from 'vue'
 
 export default {
     props: {
-        count: {
+        maxCount: {
             type: Number,
-            default: 5,
+            default: null,
+        },
+        minCount: {
+            type: Number,
+            default: null,
         },
         fetchDictionary: {
             type: Function,
@@ -122,6 +142,7 @@ export default {
     },
     data() {
         return {
+            count: 5,
             dictionary: null,
             isAdding: {
                 index: null,
@@ -157,6 +178,11 @@ export default {
         dictionary() {
             this.filterWords()
         },
+    },
+    created() {
+        if (this.minCount) {
+            this.count = this.minCount
+        }
     },
     mounted() {
         window.addEventListener('keydown', (event) => {
