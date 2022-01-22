@@ -11,9 +11,7 @@
                 href="https://github.com/sebj54"
                 target="_blank"
                 rel="noopener"
-            >Sébastien JEAN</a>
-
-            {{ $t('source') }}
+            >Sébastien JEAN</a>{{ $t('source') }}
 
             <a
                 href="https://github.com/sebj54/wordle-suggest"
