@@ -100,15 +100,11 @@
                     {{ $tc('possibleWords', wordsFiltered.length, { count: wordsFiltered.length }) }}
                 </h2>
 
-                <ul class="wordle-grid-words">
-                    <li
-                        v-for="word in wordsFiltered"
-                        :key="word"
-                        class="wordle-grid-word"
-                    >
-                        {{ word }}
-                    </li>
-                </ul>
+                <!-- We use directive for performance reason, v-for is blocking rendering -->
+                <ul
+                    v-possible-words-content="wordsFiltered"
+                    class="wordle-grid-words"
+                />
             </template>
 
             <wordle-keyboard
