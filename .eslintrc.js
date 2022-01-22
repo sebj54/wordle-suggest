@@ -41,7 +41,11 @@ module.exports = {
             },
         ],
         semi: ['error', 'never'],
-        'space-before-function-paren': ['error', 'never'],
+        'space-before-function-paren': ['error', {
+            anonymous: 'never',
+            named: 'never',
+            asyncArrow: 'always',
+        }],
         'vue/component-name-in-template-casing': ['error', 'kebab-case', {
             registeredComponentsOnly: false,
         }],

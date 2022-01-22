@@ -2,20 +2,24 @@
     <div>
         <game-version v-bind="gameVersion" />
 
-        <wordle-grid :dictionary="dictionary" />
+        <wordle-grid :fetch-dictionary="fetchDictionary" />
     </div>
 </template>
 
 <script>
-import dictionary from '@/data/dictionaries/fr-solitaire-play.json'
 import gameVersions from '@/data/games.json'
 
 export default {
     data() {
         return {
-            dictionary,
-            gameVersion: gameVersions['fr-solitaire-play'],
+            gameVersion: gameVersions['lemot-solitaire-play'],
         }
+    },
+    methods: {
+        async fetchDictionary() {
+            const { words } = await import('@/data/dictionaries/fr-solitaire-play.json')
+            return words
+        },
     },
 }
 </script>

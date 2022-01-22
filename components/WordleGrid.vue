@@ -79,19 +79,21 @@
                 </template>
             </div>
 
-            <h2 class="wordle-grid-label">
-                {{ $tc('possibleWords', wordsFiltered.length, { count: wordsFiltered.length }) }}
-            </h2>
+            <template v-if="dictionary">
+                <h2 class="wordle-grid-label">
+                    {{ $tc('possibleWords', wordsFiltered.length, { count: wordsFiltered.length }) }}
+                </h2>
 
-            <ul class="wordle-grid-words">
-                <li
-                    v-for="word in wordsFiltered"
-                    :key="word"
-                    class="wordle-grid-word"
-                >
-                    {{ word }}
-                </li>
-            </ul>
+                <ul class="wordle-grid-words">
+                    <li
+                        v-for="word in wordsFiltered"
+                        :key="word"
+                        class="wordle-grid-word"
+                    >
+                        {{ word }}
+                    </li>
+                </ul>
+            </template>
 
             <wordle-keyboard
                 v-if="(isAdding.index !== null && isAdding.isValid !== null) || isAdding.isNotInWord"
@@ -113,13 +115,14 @@ export default {
             type: Number,
             default: 5,
         },
-        dictionary: {
-            type: Array,
+        fetchDictionary: {
+            type: Function,
             required: true,
         },
     },
     data() {
         return {
+            dictionary: null,
             isAdding: {
                 index: null,
                 isValid: null,
@@ -131,7 +134,9 @@ export default {
             wordsFiltered: [],
         }
     },
-    fetch() {
+    async fetch() {
+        this.dictionary = await this.fetchDictionary(this.count)
+
         this.valids.length = this.count
         this.wrongSpots.length = this.count
 
@@ -146,6 +151,9 @@ export default {
         this.wordsFiltered = this.dictionary
     },
     watch: {
+        count() {
+            this.$fetch()
+        },
         dictionary() {
             this.filterWords()
         },
@@ -175,33 +183,35 @@ export default {
             this.filterWords()
         },
         filterWords() {
-            const validPattern = this.valids.map(letter => letter ?? '.').join('')
-            const wrongSpotPattern = this.wrongSpots.map((wrongSpotLetters) => {
-                if (wrongSpotLetters.size) {
-                    return `[^${Array.from(wrongSpotLetters).join('')}]`
-                }
-
-                return '.'
-            }).join('')
-
-            const inWordLetters = this.wrongSpots.reduce((inWordLetters, wrongSpotLetters) => {
-                wrongSpotLetters.forEach(letter => inWordLetters.add(letter))
-                return inWordLetters
-            }, new Set())
-
-            this.wordsFiltered = this.dictionary
-                .filter(word => !word.match(new RegExp(`[${Array.from(this.notInWord).join('')}]`)))
-                .filter((word) => {
-                    for (const letter of inWordLetters) {
-                        if (!word.includes(letter)) {
-                            return false
-                        }
+            if (this.dictionary) {
+                const validPattern = this.valids.map(letter => letter ?? '.').join('')
+                const wrongSpotPattern = this.wrongSpots.map((wrongSpotLetters) => {
+                    if (wrongSpotLetters.size) {
+                        return `[^${Array.from(wrongSpotLetters).join('')}]`
                     }
 
-                    return true
-                })
-                .filter(word => word.match(new RegExp(validPattern)))
-                .filter(word => word.match(new RegExp(wrongSpotPattern)))
+                    return '.'
+                }).join('')
+
+                const inWordLetters = this.wrongSpots.reduce((inWordLetters, wrongSpotLetters) => {
+                    wrongSpotLetters.forEach(letter => inWordLetters.add(letter))
+                    return inWordLetters
+                }, new Set())
+
+                this.wordsFiltered = this.dictionary
+                    .filter(word => !word.match(new RegExp(`[${Array.from(this.notInWord).join('')}]`)))
+                    .filter((word) => {
+                        for (const letter of inWordLetters) {
+                            if (!word.includes(letter)) {
+                                return false
+                            }
+                        }
+
+                        return true
+                    })
+                    .filter(word => word.match(new RegExp(validPattern)))
+                    .filter(word => word.match(new RegExp(wrongSpotPattern)))
+            }
         },
         removeNotInWord(letter) {
             this.notInWord.delete(letter)
