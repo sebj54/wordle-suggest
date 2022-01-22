@@ -56,6 +56,7 @@ export default {
 .lang-switcher {
     position: relative;
     margin-left: auto;
+    color: var(--color-headline);
 
     &-toggle {
         display: flex;
