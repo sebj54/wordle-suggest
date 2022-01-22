@@ -1,11 +1,19 @@
 <template>
     <div>
         <header>
-            <h1>
-                <nuxt-link :to="localePath('/')">
-                    Wordle Suggest
-                </nuxt-link>
+            <h1
+                v-if="isRoot"
+                class="header-brand"
+            >
+                Wordle Suggest
             </h1>
+            <nuxt-link
+                v-else
+                :to="localePath('/')"
+                class="header-brand"
+            >
+                Wordle Suggest
+            </nuxt-link>
 
             <lang-switcher />
         </header>
@@ -15,6 +23,16 @@
         </main>
     </div>
 </template>
+
+<script>
+export default {
+    computed: {
+        isRoot() {
+            return this.$route.name.startsWith('index___')
+        },
+    },
+}
+</script>
 
 <style lang="scss">
 :root {
@@ -53,24 +71,24 @@ header {
     border-bottom-color: var(--color-text);
     text-align: center;
     text-transform: uppercase;
+}
 
-    h1 {
-        margin: 0;
-        padding: .25em;
+.header-brand {
+    display: block;
+    margin: 0;
+    padding: .25em;
+    font-size: 2em;
+    font-weight: 700;
+    color: var(--color-headline);
+    text-decoration: none;
 
-        @media (max-width: 400px) {
-            font-size: 1.5em;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
+    @media (max-width: 400px) {
+        font-size: 1.5em;
     }
+}
+
+a.header-brand:hover {
+    text-decoration: underline;
 }
 
 main {
