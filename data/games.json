@@ -1,14 +1,17 @@
 {
     "original": {
         "name": "Wordle (original) 🇬🇧",
-        "author": "@powerlanguish"
+        "author": "@powerlanguish",
+        "link": "https://www.powerlanguage.co.uk/wordle/"
     },
     "lemot-louanben": {
         "name": "Le Mot 🇫🇷",
-        "author": "@louanben"
+        "author": "@louanben",
+        "link": "https://wordle.louan.me/"
     },
     "lemot-solitaire-play": {
         "name": "LeMOT 🇫🇷",
-        "author": "@LeMotLeJeu"
+        "author": "@LeMotLeJeu",
+        "link": "https://www.solitaire-play.com/lemot/"
     }
 }

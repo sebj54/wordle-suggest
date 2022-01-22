@@ -10,6 +10,7 @@
     "gameVersion": "Game version",
     "gameVersionBy": "by {author}",
     "gameVersionBackLink": "Change",
+    "goToGame": "Open link in new tab",
     "requestVersion": "You know another game version? Request it on ",
     "keyboard": "Keyboard"
 }
