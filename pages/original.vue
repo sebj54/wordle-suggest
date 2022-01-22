@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import dictionary from '@/dictionaries/en-original.json'
+import dictionary from '@/data/dictionaries/en-original.json'
 
 export default {
     data() {

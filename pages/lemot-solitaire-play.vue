@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import dictionary from '@/dictionaries/fr-solitaire-play.json'
+import dictionary from '@/data/dictionaries/fr-solitaire-play.json'
 
 export default {
     data() {

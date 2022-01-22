@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import dictionary from '@/dictionaries/fr-louanben.json'
+import dictionary from '@/data/dictionaries/fr-louanben.json'
 
 export default {
     data() {
