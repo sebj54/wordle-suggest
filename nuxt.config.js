@@ -7,7 +7,7 @@ export default {
         const i18nHead = this.$nuxtI18nHead ? this.$nuxtI18nHead({ addSeoAttributes: true }) : { meta: [], link: [] }
         const description = this.$t ? this.$t('introduction') : 'Wordle Suggest allows you to find possible words for several versions of the Wordle game, when you are out of inspiration.'
 
-        return {
+        const head = {
             htmlAttrs: i18nHead.htmlAttrs,
             title: 'Wordle Suggest',
             meta: [
@@ -22,6 +22,18 @@ export default {
                 ...i18nHead.link,
             ],
         }
+
+        if (process.env.NODE_ENV === 'production') {
+            head.script = [
+                {
+                    src: '//gc.zgo.at/count.js',
+                    async: true,
+                    'data-goatcounter': 'https://wordle-suggest.goatcounter.com/count',
+                },
+            ]
+        }
+
+        return head
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
