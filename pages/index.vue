@@ -68,6 +68,7 @@
                 :key="key"
                 :to="localePath(key)"
                 class="game-version-link"
+                no-prefecth
             >
                 <span class="game-version-link-name">{{ gameVersion.name }}</span>
 
